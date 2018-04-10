@@ -1,0 +1,23 @@
+<ul>
+  {{#each articles}}
+  <li>
+    <div class="article">
+      <p>Headline: {{headline}}</p>
+      <p>Date: {{date}}</p>
+      <p>Summary: {{summary}}</p>
+      <p>URL: {{url}}</p>
+      <p>Which wing of the Partisan Quack is this?</p>
+    </div>
+    <div class="comments">
+      <ul>
+        {{#each comments}}
+        <li>
+          <p>Comment here</p>
+          <p>User here</p>
+        </li>
+        {{#/each}}
+      </ul>
+    </div>
+  </li>
+  {{/each}}
+</ul>
