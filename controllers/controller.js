@@ -23,6 +23,7 @@ router.get("/", function(req, res) {
       res.render("Article");
     })
     .catch(function(err) {
+      console.log(err);
       res.json(err);
     });
 });
@@ -31,7 +32,6 @@ router.get("/scrape", function(req, res) {
   // var articles = [];
   var newLeftArticles = [];
   var newRightArticles = [];
-  console.log("about to get Left");  
   axios.get("https://patribotics.blog").then(function(response) {
     var $ = cheerio.load(response.data);
     $(".post-content").each(function(i, element) {
@@ -49,7 +49,6 @@ router.get("/scrape", function(req, res) {
       }
     })
   }).then(function(value) {
-    console.log("about to get Right");
     axios.get("https://www.infowars.com/category/us-news").then(function(response) {
       var $ = cheerio.load(response.data);
       $(".article-content").each(function(i, element) {
@@ -71,15 +70,13 @@ router.get("/scrape", function(req, res) {
         if (newLeftArticles[i]) newArticles.push(newLeftArticles[i]);
         if (newRightArticles[i]) newArticles.push(newRightArticles[i]);
       }
-      // newArticles.forEach(ele => {
-      //   db.Article.create(ele).then(function(dbArticle) {
-      //     console.log(dbArticle);
-      //   })
-      //   .catch(function(err) {
-      //     return res.json(err);
-      //   });
-      // })
-      res.json(newArticles);      
+      console.log("data =", newArticles[0]);
+      db.Article.create(newArticles).then(function(data){
+        res.json(data);
+      })
+      .catch(function(err) {
+        return res.json(err);
+      }); 
     })
   })
 })
@@ -91,6 +88,19 @@ router.get("/articles", function(req, res) {
       res.json(dbArticle);
     })
     .catch(function(err) {
+      console.log(err);
+      res.json(err);
+    });
+});
+
+// route for getting all saved articles from db
+router.get("/articles/saved", function(req, res) {
+  db.Article.find({ saved: true })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      console.log(err);
       res.json(err);
     });
 });
@@ -113,6 +123,17 @@ router.post("/articles/:id", function(req, res) {
     .then(function(dbComment) {
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbComment._id }, { new: true });
     })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+// route for saving article
+router.post("/articles/save/:id", function(req, res) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: { saved: req.body.saved }})
     .then(function(dbArticle) {
       res.json(dbArticle);
     })

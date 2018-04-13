@@ -11,11 +11,14 @@ var ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  // multiple comments vs one note
-  comments: {
-    type: [],
-    ref: "Comment"
+  summary: {
+    type: String
   },
+  // multiple comments vs one note
+  // comments: {
+  //   type: [],
+  //   ref: "Comment"
+  // },
   wing: {
     type: String
   },

@@ -8,7 +8,21 @@ body {
     );
 }
 
-.byline {
+header img {
+  width: 100px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header button {
+  display: inline;
+  font-size: 1.5rem;
+}
+
+.description {
   font-size: 1.5rem;
 }
 
@@ -19,7 +33,7 @@ body {
   padding: 1rem;
 }
 
-.wingAndViewCommentDiv {
+.wingAndButtonDiv {
   width: 10rem;
 }
 
@@ -42,11 +56,6 @@ body {
   float: right;
 }
 
-header img {
-  width: 100px;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 20px;
+.hidden {
+  display: none;
 }
